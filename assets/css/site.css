@@ -477,3 +477,24 @@ h1, h2, h3, .display { font-weight: 500; letter-spacing: -0.02em; }
 @keyframes sheen { 0% { background-position: 100% 0; } 55%, 100% { background-position: -60% 0; } }
 @media (max-width: 640px) { .member { display: none; } }
 @media (prefers-reduced-motion: reduce) { .hero-title .gold > span { animation: none; background-position: 50% 0; } }
+
+/* ---------- Gallery marquee ---------- */
+.gallery { background: var(--background); padding: 5rem 0 4rem; overflow: hidden; }
+.gal-head { padding: 0 1.5rem; margin-bottom: 2.5rem; }
+@media (min-width: 640px) { .gal-head { padding: 0 2.5rem; } }
+.marquee { position: relative; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.marquee-track { display: flex; width: max-content; animation: marquee 60s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee-set { display: flex; gap: 1rem; padding-right: 1rem; }
+.gal-item { position: relative; height: 22rem; flex: none; border-radius: var(--radius-card); overflow: hidden; background: var(--surface); }
+.gal-item img { height: 100%; width: auto; display: block; transition: transform 0.9s cubic-bezier(.2, .7, .2, 1); }
+.gal-item:hover img { transform: scale(1.05); }
+.gal-item figcaption { position: absolute; left: 0.75rem; bottom: 0.75rem; padding: 0.4rem 0.75rem; border-radius: var(--radius-pill);
+  font-size: 0.75rem; color: #fbf6ec; background: rgba(23, 17, 12, 0.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@media (max-width: 640px) { .gal-item { height: 15rem; } .marquee-track { animation-duration: 45s; } }
+@media (prefers-reduced-motion: reduce) {
+  .marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .marquee-track { animation: none; }
+  .marquee-set[aria-hidden] { display: none; }
+}

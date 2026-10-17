@@ -63,7 +63,7 @@ function init() {
   }
 
   // ---- bottle (rises out of the pool after a few drops) ----
-  const BOTTLE_W = 538, BOTTLE_H = 870, DROPS_BEFORE_BOTTLE = 3;
+  const BOTTLE_W = 391, BOTTLE_H = 919, DROPS_BEFORE_BOTTLE = 3;
   const img = new Image();
   let imgReady = false;
   img.onload = () => (imgReady = true);
