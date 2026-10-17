@@ -187,6 +187,17 @@ setTimeout(startCountdown, MAX_VISIBLE - MIN_VISIBLE);
 const hero = document.querySelector(".hero");
 addParallax(document.querySelector(".hero-plate-inner"), hero, "y", 0, 12);
 
+/* ---------- Hero scene: depth parallax on pointer (desktop) ---------- */
+const layers = [...document.querySelectorAll(".scene .layer")];
+layers.forEach((l) => setNow(l, { x: 0, y: 0 }));
+hero.addEventListener("pointermove", (e) => {
+  if (MOBILE.matches || REDUCED) return;
+  const r = hero.getBoundingClientRect();
+  const mx = (e.clientX - r.left) / r.width - 0.5, my = (e.clientY - r.top) / r.height - 0.5;
+  layers.forEach((l) => { const d = +l.dataset.depth; springTo(l, { x: -mx * d * 28, y: -my * d * 14 }, { tension: 120, friction: 20 }); });
+});
+hero.addEventListener("pointerleave", () => layers.forEach((l) => springTo(l, { x: 0, y: 0 }, { tension: 120, friction: 20 })));
+
 /* ---------- Collection slider (hero) ---------- */
 const COLL = [
   { img: "assets/img/b-churon.webp", t1: "Original Churon", t2: "3–4 batches a year", cta: "Reserve from next batch", product: "Original Churon Oud",
@@ -233,11 +244,11 @@ if (collStage) showColl(0, true);
 /* ---------- Trust carousel ---------- */
 const SLIDES = [
   { words: ["Distilled", "In-house,", "Never", "Blended"], img: "assets/img/b-churon.webp", name: "Original Churon Oud", role: "Our rarest grade · 3–4 batches a year",
-    alt: "Bottle of Royal Agar Attar Original Churon Oud" },
-  { words: ["Fifty", "Years", "Of", "Oud"], img: "assets/img/wood-portrait.webp", name: "Agarwood heartwood", role: "Where the resin forms",
-    alt: "Illustration of agarwood heartwood streaked with dark resin" },
-  { words: ["Sample", "First,", "Then", "Wholesale"], img: "assets/img/b-classic.webp", name: "Classic Agar Oud", role: "Year-round supply · from 120 g",
-    alt: "Bottle of Royal Agar Attar Classic Agar Oud" },
+    alt: "Bottle of Royal Agar Attar Original Churon Oud, the oil glowing amber" },
+  { words: ["Resin", "Rich,", "Heavy", "Chips"], img: "assets/img/chips-tray.webp", name: "Agarwood chips", role: "For burning and bakhoor",
+    alt: "Dark, resinous agarwood chips on a brass tray" },
+  { words: ["Sample", "First,", "Then", "Wholesale"], img: "assets/img/sinking.webp", name: "The sinking test", role: "Resin-rich wood sinks, light wood floats",
+    alt: "Glass of water with a dark agarwood chip sunk at the bottom and a pale chip floating" },
 ];
 const ghost = document.getElementById("trust-title");
 const gws = [...ghost.querySelectorAll(".gw")];

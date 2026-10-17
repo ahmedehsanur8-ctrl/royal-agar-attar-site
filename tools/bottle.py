@@ -11,7 +11,7 @@ o.append('''<defs>
 <linearGradient id="cap" x1="0" x2="1"><stop offset="0" stop-color="#0d2a8c"/><stop offset=".22" stop-color="#2f62ff"/><stop offset=".42" stop-color="#5b86ff"/><stop offset=".62" stop-color="#2148d6"/><stop offset="1" stop-color="#0a1f6b"/></linearGradient>
 <linearGradient id="capTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6d93ff"/><stop offset="1" stop-color="#2a55e6"/></linearGradient>
 <linearGradient id="glass" x1="0" x2="1"><stop offset="0" stop-color="#e9dcc4" stop-opacity=".22"/><stop offset=".12" stop-color="#e9dcc4" stop-opacity=".06"/><stop offset=".5" stop-color="#e9dcc4" stop-opacity=".03"/><stop offset=".86" stop-color="#e9dcc4" stop-opacity=".08"/><stop offset="1" stop-color="#e9dcc4" stop-opacity=".28"/></linearGradient>
-<linearGradient id="oilg" x1="0" x2="1"><stop offset="0" stop-color="#2a1406"/><stop offset=".08" stop-color="#0e0603"/><stop offset=".5" stop-color="#070301"/><stop offset=".92" stop-color="#0f0703"/><stop offset="1" stop-color="#3a1d08"/></linearGradient>
+<linearGradient id="oilg" x1="0" x2="1"><stop offset="0" stop-color="#d07a26"/><stop offset=".045" stop-color="#7a3610"/><stop offset=".14" stop-color="#2a1004"/><stop offset=".5" stop-color="#130702"/><stop offset=".86" stop-color="#2a1004"/><stop offset=".955" stop-color="#8a4012"/><stop offset="1" stop-color="#e08c30"/></linearGradient><linearGradient id="oilv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e09a46" stop-opacity=".55"/><stop offset=".12" stop-color="#e09a46" stop-opacity="0"/><stop offset=".8" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></linearGradient><radialGradient id="glowin" cx=".5" cy=".9" r=".42"><stop offset="0" stop-color="#c4701e" stop-opacity=".38"/><stop offset=".6" stop-color="#7a3a10" stop-opacity=".1"/><stop offset="1" stop-color="#8a4412" stop-opacity="0"/></radialGradient>
 <linearGradient id="menis" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c4813a"/><stop offset="1" stop-color="#5a2f0f"/></linearGradient>
 <linearGradient id="label" x1="0" x2="1"><stop offset="0" stop-color="#d9cfbd"/><stop offset=".3" stop-color="#efe7d8"/><stop offset=".75" stop-color="#ebe2d1"/><stop offset="1" stop-color="#c9bea9"/></linearGradient>
 <radialGradient id="shadow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#000" stop-opacity=".7"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
@@ -42,13 +42,15 @@ o.append('<ellipse cx="300" cy="700" rx="140" ry="10" fill="#000" opacity=".5" f
 # BOTTLE: oil first (clipped), then glass
 o.append('<g clip-path="url(#body)">')
 o.append('<rect x="140" y="384" width="320" height="320" fill="url(#oilg)"/>')
+o.append('<rect x="140" y="384" width="320" height="320" fill="url(#glowin)"/>')
+o.append('<rect x="140" y="384" width="320" height="320" fill="url(#oilv)"/>')
 o.append('<ellipse cx="300" cy="386" rx="134" ry="8" fill="url(#menis)"/>')
 o.append('<path d="M168 392 Q300 401 432 392" stroke="#d99a4f" stroke-opacity=".55" stroke-width="1.4" fill="none"/>')
 for i in range(30):
     o.append(f'<circle cx="{random.uniform(176,424):.0f}" cy="{random.uniform(388,396):.0f}" r="{random.uniform(.8,1.8):.1f}" fill="#e3b06a" opacity="{random.uniform(.3,.7):.2f}"/>')
 # amber light through oil edges
-o.append('<rect x="168" y="390" width="12" height="300" fill="#7a3f12" opacity=".45" filter="url(#blur2)"/>')
-o.append('<rect x="420" y="390" width="12" height="300" fill="#7a3f12" opacity=".55" filter="url(#blur2)"/>')
+o.append('<rect x="168" y="390" width="12" height="300" fill="#e8a050" opacity=".55" filter="url(#blur2)"/>')
+o.append('<rect x="420" y="390" width="12" height="300" fill="#f0aa58" opacity=".6" filter="url(#blur2)"/>')
 o.append('</g>')
 # glass body
 o.append('<path d="M250 250 L250 266 C250 296 168 304 168 372 L168 662 Q168 694 200 694 L400 694 Q432 694 432 662 L432 372 C432 304 350 296 350 266 L350 250 Z" fill="url(#glass)" stroke="#e9dcc4" stroke-opacity=".35" stroke-width="1.4"/>')
