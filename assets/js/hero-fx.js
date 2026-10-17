@@ -35,7 +35,7 @@ function init() {
     const r = hero.getBoundingClientRect();
     W = r.width; H = r.height;
     mobile = W < 641;
-    DPR = Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 1.75);
+    DPR = Math.min(window.devicePixelRatio || 1, mobile ? 2.75 : 2);
     canvas.width = Math.round(W * DPR);
     canvas.height = Math.round(H * DPR);
     canvas.style.width = W + "px";
@@ -56,14 +56,16 @@ function init() {
     poolRy = poolRx * 0.16;
 
     // bottle size: fits between the title and the pool
-    bh = Math.min((poolY - srcY) * (mobile ? 0.74 : 0.78), H * 0.56);
+    bh = Math.min((poolY - srcY) * (mobile ? 0.84 : 0.78), H * 0.56);
     bw = bh * (BOTTLE_W / BOTTLE_H);
     off.width = Math.max(1, Math.round(bw * DPR));
     off.height = Math.max(1, Math.round(bh * DPR));
+    ctx.imageSmoothingQuality = "high";
+    octx.imageSmoothingQuality = "high";
   }
 
   // ---- bottle (rises out of the pool after a few drops) ----
-  const BOTTLE_W = 416, BOTTLE_H = 1200, DROPS_BEFORE_BOTTLE = 1;
+  const BOTTLE_W = 496, BOTTLE_H = 1431, DROPS_BEFORE_BOTTLE = 1;
   const img = new Image();
   let imgReady = false;
   img.onload = () => (imgReady = true);
