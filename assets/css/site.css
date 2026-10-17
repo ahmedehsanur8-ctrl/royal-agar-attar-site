@@ -463,50 +463,17 @@ h1, h2, h3, .display { font-weight: 500; letter-spacing: -0.02em; }
 .stat .v { overflow-wrap: anywhere; }
 
 /* ---------- Hero scene: backlit bottle, brass mabkhara with smoke, chips in front ---------- */
-.hero-plate-inner img { opacity: 0.55; }
-.scene { position: absolute; z-index: -5; left: 50%; bottom: 0; width: 52rem; height: 74%; transform: translateX(-50%); pointer-events: none; }
-.scene-in { position: absolute; inset: 0; }
-.layer { position: absolute; will-change: transform; }
-.layer img { display: block; width: 100%; height: auto; }
-.glow { position: absolute; left: 50%; top: 52%; width: 44rem; height: 44rem; transform: translate(-50%, -50%);
-  background: radial-gradient(closest-side, rgba(232, 160, 80, 0.42), rgba(196, 112, 40, 0.16) 45%, transparent 72%); }
-.bottle { left: 50%; bottom: 3%; height: 88%; }
-.bottle img { height: 100%; width: auto; transform: translateX(-50%); filter: drop-shadow(0 2rem 2.5rem rgba(0, 0, 0, 0.6)) drop-shadow(0 0 2.5rem rgba(232, 160, 80, 0.25)); }
-.burner { left: 20%; bottom: 3%; width: 11.5rem; }
-.burner img { filter: drop-shadow(0 1.5rem 2rem rgba(0, 0, 0, 0.55)); }
-.smoke { position: absolute; left: 50%; bottom: 82%; width: 10rem; height: 24rem; transform: translateX(-50%); overflow: visible; }
-.smoke .w { opacity: 0; transform-box: fill-box; transform-origin: 50% 100%; animation: rise 7s linear infinite; }
-.smoke .w2 { animation-delay: 2.3s; animation-duration: 8s; }
-.smoke .w3 { animation-delay: 4.6s; animation-duration: 6.5s; }
-@keyframes rise {
-  0% { opacity: 0; transform: translateY(18%) scaleX(0.6); }
-  18% { opacity: 0.85; }
-  60% { opacity: 0.45; }
-  100% { opacity: 0; transform: translateY(-22%) scaleX(1.6) skewX(-8deg); }
+/* ---------- Hero motion scene (canvas) ---------- */
+.hero-plate-inner img { opacity: 0.4; }
+.fx { position: absolute; inset: 0; z-index: -5; pointer-events: none; opacity: 0; transition: opacity 1.4s ease; }
+.fx.on { opacity: 1; }
+.hero-title { position: relative; z-index: 2; }
+.hero-title .gold > span {
+  background: linear-gradient(100deg, #b98a4c 0%, #dcbd84 30%, #fff3d6 45%, #dcbd84 60%, #a8773c 100%);
+  background-size: 260% 100%; background-position: 100% 0;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: sheen 5.5s cubic-bezier(.45, 0, .2, 1) 2.2s infinite;
 }
-.hchip { filter: drop-shadow(0 0.75rem 1rem rgba(0, 0, 0, 0.5)); }
-.c1 { left: 52%; bottom: -1%; width: 9.5rem; }
-.c2 { left: 29%; bottom: -1.5%; width: 8.5rem; }
-.c3 { left: 43%; bottom: -2%; width: 6.5rem; }
-@media (max-width: 1024px) { .scene { width: 46rem; height: 60%; bottom: 14%; left: auto; right: -6rem; transform: none; } }
-@media (max-width: 640px) {
-  .scene { width: 22rem; height: 21rem; left: 50%; right: auto; top: 6.5rem; bottom: auto; transform: translateX(-50%); }
-  .glow { width: 20rem; height: 20rem; }
-  .burner { width: 7.5rem; left: 2%; }
-  .smoke { width: 5rem; height: 11rem; }
-  .c1 { width: 6.5rem; left: 58%; } .c2 { width: 5.5rem; left: 30%; } .c3 { display: none; }
-  .hero-title { position: relative; z-index: 2; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .smoke .w { animation: none; opacity: 0.35; }
-  .smoke .w2, .smoke .w3 { display: none; }
-}
-@media (max-width: 640px) {
-  .member { display: none; }
-  .scene { top: 6rem; height: 20rem; }
-}
-@media (min-width: 641px) and (max-width: 1024px) {
-  .scene { width: 40rem; height: 54%; bottom: 17%; right: -2rem; }
-  .burner { left: 4%; width: 10rem; }
-  .c3 { display: none; }
-}
+@keyframes sheen { 0% { background-position: 100% 0; } 55%, 100% { background-position: -60% 0; } }
+@media (max-width: 640px) { .member { display: none; } }
+@media (prefers-reduced-motion: reduce) { .hero-title .gold > span { animation: none; background-position: 50% 0; } }

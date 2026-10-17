@@ -16,7 +16,6 @@
 
   <link rel="preload" href="assets/fonts/onest-500.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/onest-400.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="assets/img/bottle-hero.webp" as="image" fetchpriority="high" />
   <link rel="stylesheet" href="assets/css/site.css" />
   <script type="importmap">{ "imports": { "lenis": "./assets/js/lenis.mjs" } }</script>
   <script>
@@ -79,27 +78,7 @@
         </div>
       </header>
 
-      <div class="scene" aria-hidden="true">
-        <div class="scene-in" data-inview='{"opacity":0,"y":50}' data-gate data-delay="380" data-cfg='{"tension":110,"friction":22}'>
-          <div class="glow"></div>
-          <div class="layer burner" data-depth="0.6">
-            <svg class="smoke" viewBox="0 0 200 420" preserveAspectRatio="xMidYMax meet">
-              <defs><filter id="smk" x="-50%" y="-10%" width="200%" height="120%"><feGaussianBlur stdDeviation="5"/></filter>
-                <linearGradient id="smg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#f3e6cc" stop-opacity=".0"/><stop offset=".15" stop-color="#f3e6cc" stop-opacity=".55"/><stop offset="1" stop-color="#f3e6cc" stop-opacity="0"/></linearGradient></defs>
-              <g filter="url(#smk)" fill="none" stroke="url(#smg)" stroke-linecap="round">
-                <path class="w w1" d="M100 420 C80 360 128 320 100 260 C74 205 126 165 104 100 C92 64 112 30 100 0" stroke-width="10"/>
-                <path class="w w2" d="M100 420 C120 370 70 330 96 270 C120 214 78 170 98 112 C110 74 88 36 102 0" stroke-width="7"/>
-                <path class="w w3" d="M100 420 C90 380 112 350 104 300 C96 250 116 210 100 160" stroke-width="14"/>
-              </g>
-            </svg>
-            <img src="assets/img/mabkhara.webp" alt="" width="263" height="277" />
-          </div>
-          <div class="layer bottle" data-depth="0.35"><img src="assets/img/bottle-hero.webp" alt="" width="340" height="610" fetchpriority="high" /></div>
-          <div class="layer hchip c1" data-depth="1.1"><img src="assets/img/chip-1.webp" alt="" /></div>
-          <div class="layer hchip c2" data-depth="1.4"><img src="assets/img/chip-4.webp" alt="" /></div>
-          <div class="layer hchip c3" data-depth="0.9"><img src="assets/img/chip-3.webp" alt="" /></div>
-        </div>
-      </div>
+      <canvas class="fx" aria-hidden="true"></canvas>
 
       <div class="hero-title-wrap" id="top">
         <h1 id="hero-title" class="hero-title">Pure Oud Oil</h1>
@@ -389,5 +368,6 @@
   <a class="wa-float" href="https://wa.me/8801819420122?text=Hello%20Royal%20Agar%20Attar%2C%20I%27m%20interested%20in%20wholesale%20oud%20oil." target="_blank" rel="noopener" aria-label="Chat on WhatsApp" data-wa="float"><svg><use href="#wa"/></svg></a>
 
   <script type="module" src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/hero-fx.js"></script>
 </body>
 </html>
