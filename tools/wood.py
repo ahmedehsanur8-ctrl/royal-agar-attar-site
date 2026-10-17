@@ -1,11 +1,15 @@
 import math, random
-random.seed(11)
-W,H=420,560
-kx,ky=262,214
+import os; random.seed(int(os.environ.get("SEEDW","11")))
+import os
+W,H=int(os.environ.get('W','420')),int(os.environ.get('H','560'))
+SEEDW=int(os.environ.get('SEEDW','11'))
+kx,ky=int(W*0.62),int(H*0.38)
+N=int(W/5)+12
+SC=N/84
 def gx(x0,y,i):
     dx=x0-kx; dy=(y-ky)/1.6
     g=math.exp(-(dx*dx+dy*dy)/(2*48*48))
-    push=math.copysign(1,dx if dx!=0 else 1)*58*g
+    push=math.copysign(1,dx if dx!=0 else 1)*58*(H/560)**0.5*g
     return x0+math.sin(y/110+i*.21)*5+math.sin(y/37+i)*1.2+push
 out=[f'<svg class="wood" viewBox="0 0 {W} {H}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of agarwood heartwood streaked with dark resin">',
 '''<defs>
@@ -15,19 +19,19 @@ out=[f'<svg class="wood" viewBox="0 0 {W} {H}" preserveAspectRatio="xMidYMid sli
 </defs>''',
 f'<rect width="{W}" height="{H}" fill="url(#wg)"/>']
 paths=[]
-for i in range(84):
-    x0=-30+i*5.6+random.uniform(-1.5,1.5)
+for i in range(N):
+    x0=-30+i*(W+60)/N+random.uniform(-1.5,1.5)
     pts=[(gx(x0,y,i),y) for y in range(-10,H+20,10)]
     d='M'+' L'.join(f'{x:.1f},{y}' for x,y in pts)
     paths.append((x0,d))
 # resin: dark wide strokes along chosen grain lines, blurred
 out.append('<g filter="url(#rb)" fill="none" stroke-linecap="round">')
 for idx,y0,y1,w,o in [(18,60,420,12,.55),(22,0,300,8,.45),(31,120,560,15,.5),(44,260,560,10,.4),(52,0,180,9,.4),(60,300,520,13,.5),(37,330,560,18,.45),(48,150,330,20,.6)]:
-    x0=paths[idx][0]
+    idx=min(int(idx*SC),N-1); x0=paths[idx][0]
     L=y1-y0
     for frac,mult,op in [(1,.45,o*.6),(.7,.8,o*.8),(.4,1.0,o)]:
         a=y0+int(L*(1-frac)/2); b=y1-int(L*(1-frac)/2)
-        pts=[(gx(x0,y,idx),y) for y in range(a,b,10)]
+        pts=[(gx(x0,y,idx),y) for y in range(int(a*H/560),int(b*H/560),10)]
         if len(pts)<2: continue
         d='M'+' L'.join(f'{x:.1f},{y}' for x,y in pts)
         out.append(f'<path d="{d}" stroke="#1d1007" stroke-opacity="{op:.2f}" stroke-width="{w*mult:.1f}"/>')
@@ -43,4 +47,4 @@ for r,(rx,ry,o) in enumerate([(17,28,.5),(26,40,.3)]):
 for x,y,l in [(118,200,70),(205,330,60),(300,410,80),(150,470,50)]:
     out.append(f'<path d="M{x} {y} q2.5 {l//2} 0 {l}" stroke="#c48a45" stroke-opacity=".28" stroke-width="1.4" fill="none" stroke-linecap="round"/>')
 out.append(f'<rect width="{W}" height="{H}" fill="url(#vig)"/></svg>')
-open('/tmp/claude-0/wood.svg','w').write('\n'.join(out))
+open(os.environ.get('OUT','/tmp/claude-0/wood.svg'),'w').write('\n'.join(out))

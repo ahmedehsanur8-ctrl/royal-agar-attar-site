@@ -1,5 +1,6 @@
-import random, math
-random.seed(3)
+import random, math, os, sys
+GRADE=os.environ.get('GRADE','CLASSIC AGAR OUD'); OUT=os.environ.get('OUT','/tmp/claude-0/bottle.svg'); SEED=int(os.environ.get('SEED','3')); CUT=os.environ.get('CUT')=='1'
+random.seed(SEED)
 W,H=600,760
 o=[]
 o.append(f'<svg class="hero-shot" viewBox="0 0 {W} {H}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A one-litre glass bottle of dark Royal Agar Attar oud oil with a blue cap, on a wooden table beside agarwood chips and a small sample vial">')
@@ -22,17 +23,17 @@ o.append('''<defs>
 <filter id="blur8"><feGaussianBlur stdDeviation="8"/></filter>
 </defs>''')
 # background wall planks
-o.append(f'<rect width="{W}" height="{H}" fill="url(#bgw)"/>')
-for x in range(0,W,92):
+if not CUT: o.append(f'<rect width="{W}" height="{H}" fill="url(#bgw)"/>')
+for x in ([] if CUT else range(0,W,92)):
     o.append(f'<rect x="{x}" y="0" width="2" height="560" fill="#0c0805" opacity=".7"/>')
-for i in range(70):
+for i in ([] if CUT else range(70)):
     x=random.uniform(0,W); y0=random.uniform(-40,300); L=random.uniform(120,380)
     o.append(f'<path d="M{x:.0f} {y0:.0f} q{random.uniform(-6,6):.1f} {L/2:.0f} {random.uniform(-3,3):.1f} {L:.0f}" stroke="#5a3e24" stroke-opacity="{random.uniform(.08,.25):.2f}" stroke-width="{random.uniform(.6,1.8):.1f}" fill="none"/>')
-o.append(f'<rect width="{W}" height="{H}" fill="url(#lamp)"/>')
+if not CUT: o.append(f'<rect width="{W}" height="{H}" fill="url(#lamp)"/>')
 # table
-o.append('<path d="M0 560 L600 560 L600 760 L0 760 Z" fill="url(#table)"/>')
-o.append('<rect x="0" y="558" width="600" height="3" fill="#6b4626" opacity=".55"/>')
-for i in range(26):
+if not CUT: o.append('<path d="M0 560 L600 560 L600 760 L0 760 Z" fill="url(#table)"/>')
+if not CUT: o.append('<rect x="0" y="558" width="600" height="3" fill="#6b4626" opacity=".55"/>')
+for i in ([] if CUT else range(26)):
     y=random.uniform(566,756)
     o.append(f'<path d="M0 {y:.0f} C150 {y+random.uniform(-4,4):.0f} 420 {y+random.uniform(-4,4):.0f} 600 {y+random.uniform(-3,3):.0f}" stroke="#6b4626" stroke-opacity="{random.uniform(.08,.22):.2f}" stroke-width="{random.uniform(.6,1.4):.1f}" fill="none"/>')
 # shadow
@@ -75,7 +76,7 @@ o.append('<circle cx="300" cy="492" r="13" fill="none" stroke="#7a561e" stroke-w
 o.append('<path d="M300 483c-3.4 4.6-5.2 7.8-5.2 10.4a5.2 5.2 0 0 0 10.4 0c0-2.6-1.8-5.8-5.2-10.4Z" fill="#7a561e"/>')
 o.append('<text x="300" y="530" text-anchor="middle" font-family="Bodoni Moda, Georgia, serif" font-weight="500" font-size="20" fill="#1a140e">Royal Agar Attar</text>')
 o.append('<line x1="236" y1="542" x2="364" y2="542" stroke="#a37a3c" stroke-width=".8"/>')
-o.append('<text x="300" y="562" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" letter-spacing="2" fill="#1a140e">CLASSIC AGAR OUD</text>')
+o.append(f'<text x="300" y="562" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" letter-spacing="2" fill="#1a140e">{GRADE}</text>')
 o.append('<text x="300" y="580" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="1.5" fill="#5c4e3c">PURE AGARWOOD OIL</text>')
 o.append('<text x="300" y="604" text-anchor="middle" font-family="Bodoni Moda, Georgia, serif" font-weight="500" font-size="17" fill="#1a140e">1000 ml</text>')
 o.append('<text x="300" y="624" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" letter-spacing="1" fill="#5c4e3c">SUJANAGAR · MOULVIBAZAR · BD</text>')
@@ -93,16 +94,16 @@ o.append('<rect x="218" y="226" width="164" height="4" fill="#9db6ff" opacity=".
 o.append('<path d="M244 160 L244 222" stroke="#fff" stroke-opacity=".35" stroke-width="5" stroke-linecap="round" filter="url(#blur2)"/>')
 # reflection of cap blue on table glass? skip
 # SAMPLE VIAL right
-vx=500
-o.append(f'<ellipse cx="{vx}" cy="700" rx="34" ry="6" fill="#000" opacity=".55" filter="url(#blur2)"/>')
-o.append(f'<rect x="{vx-20}" y="604" width="40" height="94" rx="8" fill="#e9dcc4" fill-opacity=".1" stroke="#e9dcc4" stroke-opacity=".35"/>')
-o.append(f'<rect x="{vx-17}" y="640" width="34" height="55" rx="6" fill="url(#oilg)"/>')
-o.append(f'<ellipse cx="{vx}" cy="641" rx="17" ry="3" fill="#b0702f"/>')
-o.append(f'<rect x="{vx-11}" y="586" width="22" height="20" rx="2" fill="url(#vialcap)"/>')
-o.append(f'<path d="M{vx-13} 612 L{vx-13} 690" stroke="#fff" stroke-opacity=".3" stroke-width="3" stroke-linecap="round"/>')
-o.append(f'<text x="{vx}" y="724" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="1.5" fill="#958873">12 ML SAMPLE</text>')
+if not CUT: vx=500
+if not CUT: o.append(f'<ellipse cx="{vx}" cy="700" rx="34" ry="6" fill="#000" opacity=".55" filter="url(#blur2)"/>')
+if not CUT: o.append(f'<rect x="{vx-20}" y="604" width="40" height="94" rx="8" fill="#e9dcc4" fill-opacity=".1" stroke="#e9dcc4" stroke-opacity=".35"/>')
+if not CUT: o.append(f'<rect x="{vx-17}" y="640" width="34" height="55" rx="6" fill="url(#oilg)"/>')
+if not CUT: o.append(f'<ellipse cx="{vx}" cy="641" rx="17" ry="3" fill="#b0702f"/>')
+if not CUT: o.append(f'<rect x="{vx-11}" y="586" width="22" height="20" rx="2" fill="url(#vialcap)"/>')
+if not CUT: o.append(f'<path d="M{vx-13} 612 L{vx-13} 690" stroke="#fff" stroke-opacity=".3" stroke-width="3" stroke-linecap="round"/>')
+if not CUT: o.append(f'<text x="{vx}" y="724" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="1.5" fill="#958873">12 ML SAMPLE</text>')
 # AGARWOOD CHIPS front-left: chunky slabs with a lit top face
-slabs=[(78,706,104,40,-10),(142,724,70,28,14),(40,734,66,26,-6),(110,684,60,24,18)]
+slabs=[] if CUT else [(78,706,104,40,-10),(142,724,70,28,14),(40,734,66,26,-6),(110,684,60,24,18)]
 for cx,cy,w,h,rot in slabs:
     pts=[]
     for k in range(10):
@@ -116,7 +117,7 @@ for cx,cy,w,h,rot in slabs:
         yy=cy-h/2+h*(j+1)/7
         o.append(f'<path d="M{cx-w/2+5:.0f} {yy:.0f} q{w/2:.0f} {random.uniform(-3,3):.1f} {w-10:.0f} {random.uniform(-2,2):.1f}" stroke="#0e0603" stroke-opacity=".6" stroke-width="{random.uniform(1.2,3):.1f}" fill="none"/>')
     o.append(f'<path d="M{cx-w/2+8:.0f} {cy-h/2+5:.0f} q{w/3:.0f} -2 {w/1.8:.0f} 1" stroke="#b58050" stroke-opacity=".55" stroke-width="1.4" fill="none"/></g>')
-o.append(f'<rect width="{W}" height="{H}" fill="url(#vig)"/>')
+if not CUT: o.append(f'<rect width="{W}" height="{H}" fill="url(#vig)"/>')
 o.append('</svg>')
 s='\n'.join(o)
-open('/tmp/claude-0/bottle.svg','w').write(s); print(len(s))
+open(OUT,'w').write(s); print(len(s))
