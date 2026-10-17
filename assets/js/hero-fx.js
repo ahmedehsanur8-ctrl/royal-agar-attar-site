@@ -54,6 +54,129 @@ function init() {
       poolRx = Math.min(W * 0.11, 240);
     }
     poolRy = poolRx * 0.16;
+
+    // bottle size: fits between the title and the pool
+    bh = Math.min((poolY - srcY) * (mobile ? 0.74 : 0.78), H * 0.56);
+    bw = bh * (BOTTLE_W / BOTTLE_H);
+    off.width = Math.max(1, Math.round(bw * DPR));
+    off.height = Math.max(1, Math.round(bh * DPR));
+  }
+
+  // ---- bottle (rises out of the pool after a few drops) ----
+  const BOTTLE_W = 538, BOTTLE_H = 870, DROPS_BEFORE_BOTTLE = 3;
+  const img = new Image();
+  let imgReady = false;
+  img.onload = () => (imgReady = true);
+  img.src = "assets/img/bottle-hero.webp";
+  const off = document.createElement("canvas");
+  const octx = off.getContext("2d");
+  let bh = 0, bw = 0;
+  const bottle = { state: "hidden", wait: 0, p: 0, v: 0, t: 0, px: 0, rot: 0 };
+  let drops = 0;
+
+  function revealBottle() {
+    bottle.state = "rise"; bottle.p = 0; bottle.v = 0; bottle.t = 0;
+    flash = 1.3;
+    for (let i = 0; i < 5; i++) ripples.push({ age: -i * 0.22, life: 3.2, big: true });
+    const n = mobile ? 10 : 18;
+    for (let i = 0; i < n; i++) {
+      const a = -Math.PI / 2 + (Math.random() - 0.5) * 2.4;
+      const sp = 220 + Math.random() * 420;
+      splashes.push({ x: poolX + (Math.random() - 0.5) * bw * 0.8, y: poolY, vx: Math.cos(a) * sp * 0.7, vy: Math.sin(a) * sp, r: 1.5 + Math.random() * 3, life: 1 });
+    }
+    for (let i = 0; i < 14; i++) spawnSmoke(true);
+  }
+
+  function stepBottle(dt) {
+    if (bottle.state === "wait") {
+      bottle.wait -= dt;
+      if (bottle.wait <= 0 && imgReady) revealBottle();
+    } else if (bottle.state === "rise" || bottle.state === "idle") {
+      bottle.t += dt;
+      // spring towards fully risen, with a little overshoot
+      // slow, heavy lift out of the oil (1.5 s), slight float above, then settle
+      const t = bottle.t;
+      if (t < 1.5) bottle.p = 1.05 * easeInOut(t / 1.5);
+      else if (t < 2.4) bottle.p = 1 + 0.025 * (1 + Math.cos(Math.PI * (t - 1.5) / 0.9));
+      else { bottle.p = 1; if (bottle.state === "rise") bottle.state = "idle"; }
+      // follow the cursor a little
+      const tx = ptr.on ? (ptr.x / W - 0.5) * 2 : 0;
+      bottle.px += (tx * (mobile ? 0 : 14) - bottle.px) * Math.min(1, dt * 3);
+      bottle.rot += (tx * (mobile ? 0 : 0.03) - bottle.rot) * Math.min(1, dt * 3);
+    }
+  }
+
+  function drawBottle() {
+    if (bottle.state === "hidden" || bottle.state === "wait" || !imgReady) return;
+    const p = bottle.p;
+    const baseY = poolY - poolRy * 0.1;
+    const bob = bottle.state === "idle" ? Math.sin((bottle.t - 2.4) * 1.4) * 4 : 0;
+    const x = poolX + bottle.px - bw / 2;
+    const y = baseY - bh + (1 - p) * (bh + 30) + bob;
+    const vis = Math.min(1, p * 1.6);
+
+    // glass shine: a soft band sweeps across the bottle every few seconds
+    octx.setTransform(1, 0, 0, 1, 0, 0);
+    octx.globalCompositeOperation = "source-over";
+    octx.clearRect(0, 0, off.width, off.height);
+    octx.drawImage(img, 0, 0, off.width, off.height);
+    const cyc = (bottle.t + 1.2) % 6.5;
+    if (cyc < 1.4) {
+      const k = cyc / 1.4;
+      const sx = (-0.6 + k * 2.2) * off.width;
+      const g = octx.createLinearGradient(sx - off.width * 0.3, 0, sx + off.width * 0.3, off.height * 0.4);
+      g.addColorStop(0, "rgba(255,240,210,0)");
+      g.addColorStop(0.5, "rgba(255,240,210,0.38)");
+      g.addColorStop(1, "rgba(255,240,210,0)");
+      octx.globalCompositeOperation = "source-atop";
+      octx.fillStyle = g;
+      octx.fillRect(0, 0, off.width, off.height);
+    }
+
+    // warm halo behind the bottle
+    ctx.globalCompositeOperation = "screen";
+    ctx.globalAlpha = 0.5 * vis;
+    const hs = bh * 0.95;
+    ctx.drawImage(glowSprite, poolX - hs, baseY - bh * 0.55 - hs, hs * 2, hs * 2);
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = "source-over";
+
+    // reflection in the oil
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(poolX, poolY, poolRx * 1.15, poolRy * 1.6, 0, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.globalAlpha = 0.22 * vis;
+    ctx.translate(x + bw / 2, baseY);
+    ctx.scale(1, -0.32);
+    ctx.drawImage(off, -bw / 2, -(baseY - y) - bh, bw, bh);
+    ctx.restore();
+
+    // the bottle itself, hidden below the oil surface while it rises
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, 0, W, baseY + 2);
+    ctx.clip();
+    ctx.translate(x + bw / 2, y + bh);
+    ctx.rotate(bottle.rot);
+    ctx.globalAlpha = vis;
+    ctx.shadowColor = "rgba(0,0,0,0.55)";
+    ctx.shadowBlur = 30;
+    ctx.shadowOffsetY = 18;
+    ctx.drawImage(off, -bw / 2, -bh, bw, bh);
+    ctx.restore();
+    ctx.globalAlpha = 1;
+
+    // contact shadow where the bottle meets the oil
+    ctx.save();
+    ctx.translate(poolX, baseY);
+    ctx.scale(1, 0.18);
+    const cg = ctx.createRadialGradient(0, 0, 0, 0, 0, bw * 0.6);
+    cg.addColorStop(0, `rgba(0,0,0,${0.5 * vis})`);
+    cg.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = cg;
+    ctx.beginPath(); ctx.arc(0, 0, bw * 0.6, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
   }
 
   // ---- drop ----
@@ -78,6 +201,7 @@ function init() {
       drop.y += drop.v * dt;
       if (drop.y + drop.r >= poolY) impact();
     } else if (drop.phase === "rest" && drop.t > REST) {
+      if (bottle.state !== "hidden") { drop.phase = "done"; return; }
       drop.phase = "grow"; drop.t = 0; drop.r = 0;
     }
   }
@@ -85,6 +209,8 @@ function init() {
   function impact() {
     drop.phase = "rest"; drop.t = 0;
     flash = 1;
+    drops++;
+    if (drops >= DROPS_BEFORE_BOTTLE && bottle.state === "hidden") { bottle.state = "wait"; bottle.wait = 0.7; }
     for (let i = 0; i < 4; i++) ripples.push({ age: -i * 0.28, life: 2.6 });
     const n = mobile ? 6 : 10;
     for (let i = 0; i < n; i++) {
@@ -163,7 +289,7 @@ function init() {
       if (rp.age >= rp.life) { ripples.splice(i, 1); continue; }
       if (rp.age < 0) continue;
       const k = rp.age / rp.life;
-      const rx = poolRx * (0.06 + easeOut(k) * 0.92);
+      const rx = poolRx * (rp.big ? 0.4 + easeOut(k) * 1.0 : 0.06 + easeOut(k) * 0.92);
       ctx.beginPath();
       ctx.ellipse(poolX, poolY, rx, rx * (poolRy / poolRx), 0, 0, Math.PI * 2);
       ctx.strokeStyle = `rgba(240,184,110,${(1 - k) * 0.55})`;
@@ -171,8 +297,9 @@ function init() {
       ctx.stroke();
     }
 
+    drawBottle();
     drawThread();
-    if (drop.phase !== "rest") drawDrop(srcX, drop.y, drop.r, drop.phase === "fall" ? Math.min(drop.v / 900, 1) : 0);
+    if (drop.phase === "grow" || drop.phase === "fall") drawDrop(srcX, drop.y, drop.r, drop.phase === "fall" ? Math.min(drop.v / 900, 1) : 0);
 
     // splash droplets
     for (let i = splashes.length - 1; i >= 0; i--) {
@@ -323,6 +450,7 @@ function init() {
     const dt = Math.min((now - last) / 1000 || 0.016, 0.05);
     last = now;
     stepDrop(dt);
+    stepBottle(dt);
     frame(dt);
   }
   function start() {
@@ -334,7 +462,9 @@ function init() {
 
   function staticFrame() {
     // reduced motion: one still frame with a hanging drop and some smoke
-    drop.phase = "grow"; drop.t = GROW; stepDrop(0);
+    drop.phase = "done";
+    if (imgReady) { bottle.state = "idle"; bottle.p = 1; bottle.t = 0; }
+    else img.addEventListener("load", () => { bottle.state = "idle"; bottle.p = 1; frame(0); }, { once: true });
     for (let i = 0; i < SMOKE_MAX; i++) { spawnSmoke(); const p = smoke[i]; p.age = Math.random() * p.life * 0.7; p.y -= p.age * 30; }
     frame(0);
   }
@@ -360,3 +490,4 @@ function init() {
 }
 
 function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+function easeInOut(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }

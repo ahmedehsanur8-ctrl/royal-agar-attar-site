@@ -192,6 +192,66 @@ def tray_svg(W=900, H=900):
 </svg>'''
 
 
+def log_shape(seed, w, h, cx, cy):
+    """Irregular split agarwood branch, long axis vertical."""
+    random.seed(seed)
+    left, right, n = [], [], 22
+    for k in range(n + 1):
+        t = k / n
+        y = cy - h / 2 + h * t
+        bulge = 1 + 0.12 * math.sin(t * 5.2 + 1) + 0.06 * math.sin(t * 13)
+        left.append((cx - w / 2 * bulge + random.uniform(-6, 6), y))
+        right.append((cx + w / 2 * bulge * random.uniform(0.9, 1.0), y))
+    # splintered ends
+    top = [(cx + w * f, cy - h / 2 - random.uniform(0, 46)) for f in (0.35, 0.15, -0.05, -0.25)]
+    bot = [(cx + w * f, cy + h / 2 + random.uniform(0, 40)) for f in (-0.3, -0.1, 0.1, 0.3)]
+    pts = left + bot + right[::-1] + top
+    return "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y in pts) + "Z"
+
+
+def heartlog_svg(W=840, H=1120):
+    """A split piece of resinated agarwood: pale wood, black resin running with the grain."""
+    d = log_shape(4, 330, 900, 0, 0)
+    chips = [(31, 170, 46, -18, 210, 1010), (33, 130, 38, 24, 640, 1030), (35, 110, 32, 70, 690, 960)]
+    cp = "".join(f'<g transform="translate({x} {y}) rotate({r})"><path d="{chip_shape(sd, w, h, 0, 0)}" fill="#0c0602" transform="translate(2 7)"/><path d="{chip_shape(sd, w, h, 0, 0)}" fill="#000" filter="url(#k{sd})"/></g>' for sd, w, h, r, x, y in chips)
+    cf = "".join(wood_filter(f"k{sd}", sd, base=(0.26, 0.155, 0.07), thr=0.4) for sd, *_ in chips)
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">
+  <defs>{cf}
+    <filter id="pale" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.30 0.007" numOctaves="4" seed="12" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0.6 0 0 0 0.44  0.46 0 0 0 0.31  0.32 0 0 0 0.18  0 0 0 0 1" result="grain"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.045 0.0028" numOctaves="4" seed="31" result="rn"/>
+      <feColorMatrix in="rn" type="matrix" values="0 0 0 0 0.05  0 0 0 0 0.025  0 0 0 0 0.01  10 0 0 0 -4.7" result="resin"/>
+      <feGaussianBlur in="resin" stdDeviation="0.7" result="rb"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.06 0.0035" numOctaves="3" seed="77" result="rn2"/>
+      <feColorMatrix in="rn2" type="matrix" values="0 0 0 0 0.2  0 0 0 0 0.1  0 0 0 0 0.035  5 0 0 0 -2.5" result="mid"/>
+      <feGaussianBlur in="mid" stdDeviation="3" result="mb"/>
+      <feSpecularLighting in="n" surfaceScale="1.8" specularConstant=".4" specularExponent="18" lighting-color="#ffe2b8" result="sp"><feDistantLight azimuth="220" elevation="45"/></feSpecularLighting>
+      <feComposite in="sp" in2="SourceAlpha" operator="in" result="spc"/>
+      <feMerge result="m"><feMergeNode in="grain"/><feMergeNode in="mb"/><feMergeNode in="rb"/><feMergeNode in="spc"/></feMerge>
+      <feComposite in="m" in2="SourceAlpha" operator="in"/>
+    </filter>
+    <filter id="edge" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="22"/></filter>
+    <clipPath id="lc"><path d="{d}"/></clipPath>
+    <radialGradient id="bg" cx=".42" cy=".35" r=".85"><stop offset="0" stop-color="#3b2716"/><stop offset=".6" stop-color="#1a110a"/><stop offset="1" stop-color="#0d0805"/></radialGradient>
+    <linearGradient id="lit" x1="0" x2="1"><stop offset="0" stop-color="#ffcf8a" stop-opacity=".22"/><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></linearGradient>
+  </defs>
+  <rect width="{W}" height="{H}" fill="url(#bg)"/>
+  <g transform="translate(430 540) rotate(-11)">
+    <path d="{d}" fill="#000" opacity=".7" transform="translate(34 40)" filter="url(#sh)"/>
+    <path d="{d}" fill="#1a0d05" transform="translate(10 12)"/>
+    <path d="{d}" fill="#000" filter="url(#pale)"/>
+    <g clip-path="url(#lc)">
+      <rect x="-260" y="-560" width="520" height="1120" fill="url(#lit)"/>
+      <path d="{d}" fill="none" stroke="#120803" stroke-width="40" opacity=".75" filter="url(#edge)"/>
+      <path d="M-175 -480 C-190 -200 -150 120 -185 480" stroke="#2a170a" stroke-width="30" opacity=".85" filter="url(#edge)"/>
+    </g>
+  </g>
+  {cp}
+</svg>'''
+
+
 def render(svg, out, w, h, transparent=False, scale=2, crop=True):
     path = f"{TMP}/{out}.png"
     with sync_playwright() as p:
