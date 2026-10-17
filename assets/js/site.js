@@ -200,11 +200,11 @@ hero.addEventListener("pointerleave", () => layers.forEach((l) => springTo(l, { 
 
 /* ---------- Collection slider (hero) ---------- */
 const COLL = [
-  { img: "assets/img/b-churon.webp", t1: "Original Churon", t2: "3–4 batches a year", cta: "Reserve from next batch", product: "Original Churon Oud",
+  { img: "assets/img/grade-original-churon.webp", t1: "Original Churon", t2: "3–4 batches a year", cta: "Reserve from next batch", product: "Original Churon Oud",
     msg: "Hello, I'd like to reserve Original Churon Oud. When is your next batch?" },
-  { img: "assets/img/b-luha.webp", t1: "Luha Churon", t2: "Small, occasional batches", cta: "Ask on WhatsApp", product: "Luha Churon Oud",
+  { img: "assets/img/grade-luha-churon.webp", t1: "Luha Churon", t2: "Small, occasional batches", cta: "Ask on WhatsApp", product: "Luha Churon Oud",
     msg: "Hello, I'm interested in Luha Churon Oud for wholesale." },
-  { img: "assets/img/b-classic.webp", t1: "Classic Agar Oud", t2: "Year-round supply", cta: "Get the price list", product: "Classic Agar Oud",
+  { img: "assets/img/grade-classic-agar.webp", t1: "Classic Agar Oud", t2: "Year-round supply", cta: "Get the price list", product: "Classic Agar Oud",
     msg: "Hello, please send the wholesale price for Classic Agar Oud." },
 ];
 const waLink = (msg) => `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
@@ -243,10 +243,12 @@ if (collStage) showColl(0, true);
 
 /* ---------- Trust carousel ---------- */
 const SLIDES = [
-  { words: ["Distilled", "In-house,", "Never", "Blended"], img: "assets/img/b-churon.webp", name: "Original Churon Oud", role: "Our rarest grade · 3–4 batches a year",
+  { words: ["Distilled", "In-house,", "Never", "Blended"], img: "assets/img/grade-original-churon.webp", name: "Original Churon Oud", role: "Our rarest grade · 3–4 batches a year",
     alt: "Bottle of Royal Agar Attar Original Churon Oud, the oil glowing amber" },
-  { words: ["Resin", "Rich,", "Heavy", "Chips"], img: "assets/img/p-chips.webp", name: "Agarwood chips", role: "For burning and bakhoor",
-    alt: "Close-up of dark, resinous agarwood chips" },
+  { words: ["Resin", "Rich,", "Heavy", "Chips"], img: "assets/img/chips-closeup.webp", name: "Agarwood chips", role: "For burning and bakhoor",
+    alt: "Pile of resin-rich agarwood chips" },
+  { words: ["Smell", "Before", "You", "Buy"], img: "assets/img/chip-test.webp", name: "The heat test", role: "Warm a chip on charcoal and smell the smoke",
+    alt: "An agarwood chip warming on charcoal in a brass burner, a thin wisp of smoke rising" },
 ];
 const ghost = document.getElementById("trust-title");
 const gws = [...ghost.querySelectorAll(".gw")];
