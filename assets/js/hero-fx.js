@@ -63,7 +63,7 @@ function init() {
   }
 
   // ---- bottle (rises out of the pool after a few drops) ----
-  const BOTTLE_W = 391, BOTTLE_H = 919, DROPS_BEFORE_BOTTLE = 3;
+  const BOTTLE_W = 538, BOTTLE_H = 870, DROPS_BEFORE_BOTTLE = 1;
   const img = new Image();
   let imgReady = false;
   img.onload = () => (imgReady = true);
@@ -210,7 +210,7 @@ function init() {
     drop.phase = "rest"; drop.t = 0;
     flash = 1;
     drops++;
-    if (drops >= DROPS_BEFORE_BOTTLE && bottle.state === "hidden") { bottle.state = "wait"; bottle.wait = 0.7; }
+    if (drops >= DROPS_BEFORE_BOTTLE && bottle.state === "hidden") { bottle.state = "wait"; bottle.wait = 0.4; }
     for (let i = 0; i < 4; i++) ripples.push({ age: -i * 0.28, life: 2.6 });
     const n = mobile ? 6 : 10;
     for (let i = 0; i < n; i++) {
