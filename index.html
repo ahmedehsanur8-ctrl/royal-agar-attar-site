@@ -225,6 +225,50 @@
           </div>
         </div>
       </div>
+
+      <!-- FILM: tree to oil, real footage from our village and factory (assets/js/film.js) -->
+      <div class="film" id="tree-to-oil" data-film data-inview='{"opacity":0,"y":40}' data-cfg='{"tension":160,"friction":26}'>
+        <div class="film-stage" role="region" aria-roledescription="video story" aria-label="From tree to oil, in 7 steps">
+          <video class="film-vid is-on" muted playsinline preload="none" poster="assets/video/poster.webp" aria-hidden="true"></video>
+          <video class="film-vid" muted playsinline preload="none" aria-hidden="true"></video>
+          <div class="film-scrim" aria-hidden="true"></div>
+
+          <div class="film-top">
+            <p class="film-label"><svg class="mark" aria-hidden="true"><use href="#mark"/></svg>From tree to oil</p>
+            <button class="film-pause" type="button" aria-label="Pause film" data-film-pause>
+              <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+              <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg>
+            </button>
+          </div>
+
+          <div class="film-copy" aria-live="polite">
+            <p class="film-step" data-film-step>Step 01 <i></i> of 07</p>
+            <h3 class="film-title" data-film-title>Nailing the tree</h3>
+            <p class="film-text" data-film-text>Iron nails go into the living agar tree. To heal itself, the tree slowly forms dark resin around each wound.</p>
+            <p class="film-tag" data-film-tag hidden></p>
+          </div>
+
+          <div class="film-end" data-film-end hidden>
+            <p class="film-step">Sujanagar · Moulvibazar <i></i></p>
+            <h3 class="film-title">Pure oud oil.<br><em>Distilled, never blended.</em></h3>
+            <p class="film-text">Samples from 6 ml. Wholesale from 120 g (about 10 tola).</p>
+            <div class="film-cta">
+              <a class="pill light" href="https://wa.me/8801819420122?text=Hello%2C%20I%20watched%20your%20tree-to-oil%20film.%20I%27d%20like%20samples%20and%20your%20wholesale%20price%20list." target="_blank" rel="noopener" data-wa="film_end"><svg class="wa-ico" aria-hidden="true"><use href="#wa"/></svg>Request samples on WhatsApp</a>
+              <button class="pill ghost-light" type="button" data-film-replay>Watch again</button>
+            </div>
+          </div>
+
+          <ol class="film-ticks">
+            <li><button type="button" data-film-go="1"><span class="bar"><i></i></span><span class="lbl"><b>01</b>Nailing</span></button></li>
+            <li><button type="button" data-film-go="2"><span class="bar"><i></i></span><span class="lbl"><b>02</b>Felling</span></button></li>
+            <li><button type="button" data-film-go="3"><span class="bar"><i></i></span><span class="lbl"><b>03</b>Carving</span></button></li>
+            <li><button type="button" data-film-go="4"><span class="bar"><i></i></span><span class="lbl"><b>04</b>Soaking</span></button></li>
+            <li><button type="button" data-film-go="5"><span class="bar"><i></i></span><span class="lbl"><b>05</b>Distilling</span></button></li>
+            <li><button type="button" data-film-go="6"><span class="bar"><i></i></span><span class="lbl"><b>06</b>Collecting</span></button></li>
+            <li><button type="button" data-film-go="7"><span class="bar"><i></i></span><span class="lbl"><b>07</b>Filtering</span></button></li>
+          </ol>
+        </div>
+      </div>
     </section>
 
     <!-- GALLERY -->
@@ -388,6 +432,7 @@
   <a class="wa-float" href="https://wa.me/8801819420122?text=Hello%20Royal%20Agar%20Attar%2C%20I%27m%20interested%20in%20wholesale%20oud%20oil." target="_blank" rel="noopener" aria-label="Chat on WhatsApp" data-wa="float"><svg><use href="#wa"/></svg></a>
 
   <script type="module" src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/film.js"></script>
   <script type="module" src="assets/js/hero-fx.js"></script>
 </body>
 </html>
