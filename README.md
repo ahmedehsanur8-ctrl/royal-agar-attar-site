@@ -19,7 +19,7 @@ Single static page, no build step. Layout and motion follow the F1 driver-site p
 - Say "nothing added after distillation".
 
 ## Tracking
-Every WhatsApp link pushes `whatsapp_click` and `generate_lead` to `dataLayer` with a `wa_location`. Paste a GTM snippet at the marked spot in `<head>`.
+Every WhatsApp link pushes `whatsapp_click` and `generate_lead` to `dataLayer` with a `wa_location`. GTM container `GTM-W9JVFSKX` is installed in `<head>` (plus the `<noscript>` fallback after `<body>`).
 
 ## Hosting
 Static files; `netlify.toml` publishes the repo root. Works on Netlify, Cloudflare Pages, GitHub Pages or Vercel.
