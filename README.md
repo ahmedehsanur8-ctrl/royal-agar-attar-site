@@ -23,3 +23,10 @@ Every WhatsApp link pushes `whatsapp_click` and `generate_lead` to `dataLayer` w
 
 ## Hosting
 Static files; `netlify.toml` publishes the repo root. Works on Netlify, Cloudflare Pages, GitHub Pages or Vercel.
+
+## Prerendered content
+The timeline rows, grade cards and sizes strip are written into `index.html` as plain HTML (between `<!-- @prerender:… -->` markers), so search engines and link previews see them without JavaScript. Their data lives in `STEPS`, `GRADES` and `CARDS` in the page script. After editing those, run:
+
+    node tools/prerender.mjs
+
+`404.html` is served by Netlify for any missing URL.

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Page not found | Royal Agar Attar</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#090a0b">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/oswald-latin-700.woff2" crossorigin>
+<script>window.dataLayer = window.dataLayer || [];</script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W9JVFSKX');</script>
+<!-- End Google Tag Manager -->
+<style>
+@font-face{font-family:"Oswald";font-weight:700;font-display:swap;src:url(/assets/fonts/oswald-latin-700.woff2) format("woff2")}
+@font-face{font-family:"Space Grotesk";font-weight:400;font-display:swap;src:url(/assets/fonts/space-grotesk-latin-400.woff2) format("woff2")}
+@font-face{font-family:"Space Grotesk";font-weight:700;font-display:swap;src:url(/assets/fonts/space-grotesk-latin-700.woff2) format("woff2")}
+:root{--bg:#eba341;--panel:#090a0b;--fg:#fff;--muted:#b6c1c8;--accent:#eba341}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);font-family:"Space Grotesk",system-ui,sans-serif;color:var(--fg);-webkit-font-smoothing:antialiased}
+.panel{position:fixed;inset:16px;background:var(--panel);display:flex;flex-direction:column;justify-content:space-between;padding:clamp(24px,3vw,40px);overflow:hidden}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+a{color:inherit;text-decoration:none}
+.logo{display:flex;align-items:center;gap:.55rem;font-family:"Oswald",Impact,sans-serif;font-weight:700;text-transform:uppercase;font-size:1.15rem;color:var(--accent)}
+.logo svg{width:.9rem;height:1.3rem}
+.code{font-size:.8rem;text-transform:uppercase;color:var(--muted)}
+h1{margin:0;font-family:"Oswald",Impact,sans-serif;font-weight:700;text-transform:uppercase;line-height:.95;font-size:clamp(3rem,9vw,8.5rem);color:var(--accent)}
+h1 span{color:var(--fg)}
+p{margin:1.5rem 0 0;max-width:30rem;text-transform:uppercase;line-height:1.2;font-size:clamp(.95rem,1.3vw,1.15rem)}
+.links{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2rem}
+.btn{display:inline-flex;align-items:center;gap:.8rem;height:50px;padding:0 1.4rem;border:1px solid var(--accent);color:var(--accent);text-transform:uppercase;font-weight:700;font-size:.9rem;clip-path:polygon(0 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%);transition:background 200ms,color 200ms}
+.btn:hover,.btn:focus-visible{background:var(--accent);color:var(--panel)}
+.btn.solid{background:var(--accent);color:var(--panel)}
+.btn.solid:hover{background:transparent;color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.foot{font-size:.75rem;text-transform:uppercase;color:rgb(255 255 255/.45)}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W9JVFSKX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<main class="panel">
+  <div class="top">
+    <a class="logo" href="/" aria-label="Royal Agar Attar home"><svg viewBox="0 0 14 20" fill="currentColor" aria-hidden="true"><path d="M7 1C7 1 1.5 8.2 1.5 12.6A5.5 5.5 0 0 0 12.5 12.6C12.5 8.2 7 1 7 1Z"/></svg>Royal Agar Attar</a>
+    <span class="code">Error 404</span>
+  </div>
+  <div>
+    <h1>This page<br>isn't here<span>.</span></h1>
+    <p>The link may be old or mistyped. Everything we sell, the grades, sizes and how we make the oil, is on the home page.</p>
+    <div class="links">
+      <a class="btn solid" href="/">Back to the home page →</a>
+      <a class="btn" href="/#grades">See the grades</a>
+      <a class="btn" id="wa" href="https://wa.me/8801819420122?text=Hi%20Royal%20Agar%20Attar%2C%20I%27d%20like%20a%20wholesale%20quote%20for%20oud%20oil." target="_blank" rel="noopener">WhatsApp us</a>
+    </div>
+  </div>
+  <p class="foot">Sujanagar, Barlekha, Moulvibazar, Bangladesh</p>
+</main>
+<script>
+window.dataLayer.push({ event: "page_not_found", page_path: location.pathname });
+document.getElementById("wa").addEventListener("click", function () {
+  window.dataLayer.push({ event: "whatsapp_click", wa_location: "404" });
+  window.dataLayer.push({ event: "generate_lead", lead_source: "whatsapp", wa_location: "404" });
+});
+</script>
+</body>
+</html>
