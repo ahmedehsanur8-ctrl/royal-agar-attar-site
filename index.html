@@ -27,9 +27,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebSite", "name": "Royal Agar Attar", "alternateName": ["Royal Agor Attar", "Royal Agarwood & Chips"], "url": "https://royalagarattar.qd.je/"}, {"@context": "https://schema.org", "@type": "Organization", "name": "Royal Agar Attar", "alternateName": "Royal Agor Attar", "url": "https://royalagarattar.qd.je/", "logo": "https://royalagarattar.qd.je/assets/icon-512.png", "image": "https://royalagarattar.qd.je/assets/img/social-share.jpg", "description": "Family agarwood (oud) oil distillery in Sujanagar, Barlekha, Moulvibazar, Bangladesh. Original Churon, Luha Churon and Classic Agar oud oil, plus agarwood chips. Samples and wholesale.", "telephone": "+8801819420122", "address": {"@type": "PostalAddress", "addressLocality": "Sujanagar, Barlekha", "addressRegion": "Moulvibazar, Sylhet Division", "addressCountry": "BD"}, "contactPoint": {"@type": "ContactPoint", "telephone": "+8801819420122", "contactType": "sales", "availableLanguage": ["English", "Bengali"]}, "sameAs": ["https://www.facebook.com/profile.php?id=61577326690975", "https://www.instagram.com/royalagorattar/", "https://www.tiktok.com/@ehsanur49"]}]</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/oswald-latin-700.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/space-grotesk-latin-400.woff2" crossorigin>
 <link rel="preload" as="image" href="assets/img/smoke.webp">
 <link rel="preload" as="image" href="assets/img/bottle.webp">
 
@@ -43,6 +42,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 
 <style>
+@font-face{font-family:"Oswald";font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/oswald-latin-500.woff2) format("woff2")}
+@font-face{font-family:"Oswald";font-style:normal;font-weight:700;font-display:swap;src:url(assets/fonts/oswald-latin-700.woff2) format("woff2")}
+@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/space-grotesk-latin-400.woff2) format("woff2")}
+@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/space-grotesk-latin-500.woff2) format("woff2")}
+@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:700;font-display:swap;src:url(assets/fonts/space-grotesk-latin-700.woff2) format("woff2")}
 :root{
   --raw-ice-50:#f7fafb; --raw-ice-100:#ebeef1; --raw-ice-200:#dfe5e9; --raw-steel-400:#b6c1c8;
   --raw-ink-950:#090a0b; --raw-ink-900:#0e0f14; --raw-ink-800:#1b1d24; --raw-ink-700:#2a2d36;
@@ -544,7 +548,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="layer-inner">
       <section data-season id="lap" aria-labelledby="lapHead">
         <div class="film" id="film" aria-hidden="true">
-          <video id="filmVideo" muted loop playsinline preload="metadata" poster="assets/video/poster-wide.webp"></video>
+          <video id="filmVideo" muted loop playsinline preload="none"></video>
           <canvas id="filmCanvas"></canvas>
           <div class="film-shade"></div>
         </div>
@@ -618,7 +622,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
     <figure class="g-photo" id="gPhoto">
-      <div class="ph"><img src="assets/img/bottling.webp" alt="Oud oil running through a steel funnel into a glass bottle at the Sujanagar distillery" loading="lazy" decoding="async"></div>
+      <div class="ph"><img src="assets/img/bottling.webp" srcset="assets/img/bottling-560.webp 560w, assets/img/bottling.webp 900w" sizes="(max-width: 639px) 78vw, 30vw" width="900" height="1125" alt="Oud oil running through a steel funnel into a glass bottle at the Sujanagar distillery" loading="lazy" decoding="async"></div>
       <svg class="o" viewBox="0 0 710.995 462.995" preserveAspectRatio="none" aria-hidden="true"><path d="M24 .5H710.5V416L698.5 416V438.5L686.5 438.5V462.5H.5V46.5L12.5 46.5V24L24.5 24Z" vector-effect="non-scaling-stroke"/></svg>
       <figcaption><span>Bottling at the distillery</span><span>Real photo</span></figcaption>
     </figure>
@@ -716,6 +720,11 @@ const CARDS = [ // x, w are design px in a 1440 frame
 ];
 
 /* ================= utilities ================= */
+/* No graphics chip (software WebGL, e.g. SwiftShader / llvmpipe) means every animated frame lands on the CPU:
+   draw the hero once and keep the decorative loops still. */
+const SOFT_GL = (() => { try { const c = document.createElement("canvas").getContext("webgl"); if (!c) return true;
+  const ext = c.getExtension("WEBGL_debug_renderer_info"); const r = ext ? c.getParameter(ext.UNMASKED_RENDERER_WEBGL) : c.getParameter(c.RENDERER);
+  return /swiftshader|llvmpipe|software|basic render/i.test(String(r)); } catch (e) { return false; } })();
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
@@ -865,7 +874,7 @@ $$("canvas.contour").forEach((cv) => {
   const ctx = cv.getContext("2d"); let w = 0, h = 0, visible = false, tail = 0;
   function size(){ const r = Math.min(devicePixelRatio, 2); w = cv.clientWidth; h = cv.clientHeight; cv.width = w * r; cv.height = h * r; ctx.setTransform(r, 0, 0, r, 0, 0); draw(0); }
   function draw(time){
-    const t = time * 0.001 * 0.3; const N = 96; const cw = w / N; const rows = Math.ceil(h / cw) + 1;
+    const t = time * 0.001 * 0.3; const N = innerWidth < 768 ? 48 : 96; const cw = w / N; const rows = Math.ceil(h / cw) + 1;
     const g = new Float32Array((N + 1) * (rows + 1)); const sc = 3.8 / Math.max(w, 1) * 1.6;
     for (let j = 0; j <= rows; j++) for (let i = 0; i <= N; i++) g[j * (N + 1) + i] = field(i * cw * sc, j * cw * sc, t);
     ctx.clearRect(0, 0, w, h); ctx.strokeStyle = css(cv.dataset.color); ctx.lineWidth = 1; ctx.beginPath();
@@ -882,7 +891,7 @@ $$("canvas.contour").forEach((cv) => {
   }
   new IntersectionObserver((es) => { visible = es[0].isIntersecting; if (!visible) tail = 10; }).observe(cv);
   new ResizeObserver(size).observe(cv);
-  subscribe((time) => { if (!visible) { if (tail <= 0) return; tail--; } if (!reduced) draw(time); }, () => 24);
+  subscribe((time) => { if (!visible) { if (tail <= 0) return; tail--; } if (!reduced && !SOFT_GL) draw(time); }, () => (innerWidth < 768 ? 66 : 24));
 });
 
 /* ================= menu sheet ================= */
@@ -1061,6 +1070,7 @@ function createHero(){
     radius = (innerWidth < 640 ? 0.2 : 0.13) * H;
     gl.uniform4fv(U.uBottle, bottle); gl.uniform4fv(U.uSmoke, smoke); gl.uniform2f(U.uRes, W, H); gl.uniform1f(U.uDpr, dpr);
     gl.uniform1f(U.uWave, mobileTier ? 0 : 1);
+    state._frozen = false;
   }
   document.fonts && document.fonts.ready.then(() => layout()); setTimeout(() => layout(), 2600);
   let roRaf = 0; new ResizeObserver(() => { if (!roRaf) roRaf = requestAnimationFrame(() => { roRaf = 0; layout(); }); }).observe(hero);
@@ -1098,9 +1108,12 @@ function createHero(){
   state.ready = Promise.all([loadImg("assets/img/smoke.webp"), loadImg("assets/img/bottle.webp")]).then(([s, b]) => {
     tex(s, 0); tex(b, 1); layout(); render(performance.now());
     let inView = true, tail = 0; new IntersectionObserver((es) => { inView = es[0].isIntersecting; if (!inView) tail = 10; }).observe(hero);
-    subscribe((time) => { if (document.hidden || scrollY > innerHeight * 1.15) return; if (!inView) { if (tail <= 0) return; tail--; } if (reduced && state.intro >= 1 && state.rise === 0 && state._frozen) return; render(time); if (reduced && state.intro >= 1 && state.rise === 0) state._frozen = true; }, () => (mobileTier ? 1000 / 60 - 2 : 0));
+    const still = reduced || SOFT_GL;
+    subscribe((time) => { if (document.hidden || scrollY > innerHeight * 1.15) return; if (!inView) { if (tail <= 0) return; tail--; }
+      if (still && state._frozen) return; render(time);
+      if (still && state.introStart && state.rise === 0) state._frozen = true; }, () => (SOFT_GL ? 250 : mobileTier ? 1000 / 30 - 2 : 0));
   });
-  state.beginRise = () => { const n = performance.now(); state.riseStart = n; state.introStart = mobileTier ? n - 4000 : n; };
+  state.beginRise = () => { const n = performance.now(); state.riseStart = n; state.introStart = (mobileTier || SOFT_GL) ? n - 4000 : n; if (SOFT_GL) state.riseStart = n - 2000; };
   return state;
 }
 
@@ -1142,11 +1155,12 @@ function createLap(){
   const section = $("#lap"), film = $("#film"), video = $("#filmVideo"), canvas = $("#filmCanvas");
   const tall = () => section.clientHeight > section.clientWidth * 1.05;
   let src = "";
-  function pick(){ const ext = video.canPlayType('video/webm; codecs="vp9"') ? "webm" : "mp4"; const want = `assets/video/harvest-${tall() ? "tall" : "wide"}.${ext}`; if (want !== src) { src = want; video.src = want; if (visible) video.play().catch(() => {}); } }
+  function pick(){ const ext = video.canPlayType('video/webm; codecs="vp9"') ? "webm" : "mp4"; const want = `assets/video/harvest-${tall() ? "tall" : "wide"}.${ext}`; if (want !== src) { src = want; if (!video.poster) video.poster = "assets/video/poster-wide.webp"; video.src = want; if (visible) video.play().catch(() => {}); } }
   let visible = false;
   new IntersectionObserver((es) => { visible = es[0].isIntersecting; if (visible) { pick(); video.play().catch(() => {}); } else video.pause(); }, { rootMargin: "20% 0%" }).observe(section);
-  addEventListener("resize", pick);
+  addEventListener("resize", () => { if (visible) pick(); });
   if (reduced) { video.removeAttribute("loop"); }
+  if (SOFT_GL) return;
   const gl = canvas.getContext("webgl2", { antialias: false });
   if (!gl) return;
   let prog;
@@ -1201,7 +1215,7 @@ function createTimeline(){
   STEPS.forEach((s, i) => {
     const kind = i % 2 === 0 ? "c" : "s"; const side = [ "l", "r", "r", "l", "l", "r", "r" ][i];
     const row = document.createElement("article"); row.className = `row ${kind} ${side}`; row.setAttribute("aria-labelledby", `st${i}`);
-    row.innerHTML = `<div class="pl-layer"><div class="pl"><div class="pl-fill"><div class="pl-slot"><img src="assets/img/steps/${s.img}.webp" alt="${s.alt}" loading="lazy" decoding="async"></div></div><svg viewBox="0 0 710.995 462.995" preserveAspectRatio="none" aria-hidden="true"><path d="${OUT}"/></svg></div></div>
+    row.innerHTML = `<div class="pl-layer"><div class="pl"><div class="pl-fill"><div class="pl-slot"><img src="assets/img/steps/${s.img}.webp" srcset="assets/img/steps/${s.img}-720.webp 720w, assets/img/steps/${s.img}.webp 1420w" sizes="(max-width: 639px) 82vw, (min-width: 640px) 50vw" width="1420" height="1016" alt="${s.alt}" loading="lazy" decoding="async"></div></div><svg viewBox="0 0 710.995 462.995" preserveAspectRatio="none" aria-hidden="true"><path d="${OUT}"/></svg></div></div>
       <div class="copy-layer"><div class="copy"><p class="yr" data-split="letters" data-stagger="70" data-cfg="year">${s.n}</p><h3 class="ct" id="st${i}" data-split="words" data-stagger="60" data-delay="160" data-cfg="copy">${s.t}</h3><p class="cb">${s.b}</p></div></div>`;
     rows.appendChild(row);
     const plLayer = $(".pl", row), copyLayer = $(".copy-layer", row), slot = $(".pl-slot", row), yr = $(".yr", row), cb = $(".cb", row);
