@@ -1,4 +1,12 @@
+# Everyone may crawl the whole site.
 User-agent: *
+Allow: /
+
+# OpenAI: ChatGPT Search (OAI-SearchBot) and links opened from ChatGPT (ChatGPT-User).
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
 Allow: /
 
 Sitemap: https://royalagarattar.qd.je/sitemap.xml

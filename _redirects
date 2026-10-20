@@ -1,0 +1,17 @@
+# Old URLs from the previous design → their closest new equivalent (301).
+/tools/*  /  301
+/assets/img/bottle-hero.webp  /assets/img/bottle.webp  301
+/assets/img/grade-original-churon.webp  /assets/img/bottle.webp  301
+/assets/img/grade-luha-churon.webp  /assets/img/bottle.webp  301
+/assets/img/grade-classic-agar.webp  /assets/img/bottle.webp  301
+/assets/img/samples.webp  /assets/img/bottle.webp  301
+/assets/img/wholesale.webp  /assets/img/bottling.webp  301
+/assets/img/oil-drop.webp  /assets/img/bottling.webp  301
+/assets/img/shipping.webp  /assets/img/bottling.webp  301
+/assets/img/background-wood.webp  /assets/img/steps/step-03.webp  301
+/assets/img/heartwood.webp  /assets/img/steps/step-03.webp  301
+/assets/img/agarwood-texture-reference.webp  /assets/img/steps/step-03.webp  301
+/assets/img/chip-test.webp  /assets/img/chips-closeup.webp  301
+/assets/img/tree.webp  /assets/img/steps/step-01.webp  301
+/assets/video/poster.webp  /assets/video/poster-wide.webp  301
+/assets/video/*  /assets/video/harvest-wide.mp4  301
