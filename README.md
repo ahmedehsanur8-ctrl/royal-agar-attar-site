@@ -1,11 +1,25 @@
 # Royal Agar Attar website
 
-Live at https://royalagarattar.qd.je. Netlify deploys automatically on every push to `main` (no build step).
+Live at https://royalagarattar.qd.je. Netlify deploys automatically on every push to `main` (no build step). The previous design is kept in the `backup-old-design` branch.
 
-- `index.html`: the page (layout based on the "Baseline" template structure, Royal Agar Attar content).
-- `assets/css/site.css`, `assets/js/site.js`: styles and motion (spring helper + Lenis smooth scroll, self-hosted in `assets/js/lenis.mjs`).
-- `assets/img/`: illustrations rendered from `tools/` (`bottle.py`, `wood.py`, `render.py`). Replace with real photos when available.
-- `assets/fonts/`: Onest 400/500, self-hosted.
+Single static page, no build step. Layout and motion follow the F1 driver-site prompt (loader, cursor liquid reveal, sticky stacking sections, chequered seams, lap trace, timeline rail, contour footer), with Royal Agar Attar content.
 
-Tracking: the page pushes `whatsapp_click`, `quote_open` and `generate_lead` to `dataLayer`. Paste a GTM ID in the marked block in `index.html` to send them to GA4 / Meta.
-- `assets/video/` + `assets/js/film.js`: the "From tree to oil" film in the process section. Real footage, one H.264 clip per step (muted, no audio track), crossfaded; plays only while on screen. Scene text and timing live in `SCENES` at the top of `film.js`.
+- `index.html`: the whole page (styles and scripts inline).
+- `assets/js/lenis.mjs`: smooth scroll (self-hosted).
+- `assets/img/smoke.webp`: hero background. Free photo by Thomas Stephan on Unsplash (Unsplash License), credited in the footer.
+- `assets/img/bottle.webp`: the hero bottle, with "Pure" removed from the label.
+- `assets/img/steps/`: frames taken from the real process videos.
+- `assets/img/bottling.webp`: real frame, oil being bottled (grades section).
+- `assets/video/harvest-*.{webm,mp4}`: 15s loop cut from the real process footage (wide for desktop, tall for phones), shown as an amber halftone with true colour under the cursor.
+
+## Claim rules (keep when editing copy)
+- No "pure", "100% pure", "certified", "lab tested" or "organic" until there is a lab report.
+- No shipping or export claims until export permits are in place.
+- Wood is bought from growers; do not say "we grow our own trees".
+- Say "nothing added after distillation".
+
+## Tracking
+Every WhatsApp link pushes `whatsapp_click` and `generate_lead` to `dataLayer` with a `wa_location`. Paste a GTM snippet at the marked spot in `<head>`.
+
+## Hosting
+Static files; `netlify.toml` publishes the repo root. Works on Netlify, Cloudflare Pages, GitHub Pages or Vercel.
